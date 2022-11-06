@@ -1,0 +1,1235 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "TechPotion ЛЦТ2022 Swagger",
+        "title": "Swagger for TechPotion's leadershack2022 solution",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "65.108.145.234:15400",
+    "basePath": "/api/v1",
+    "paths": {
+        "/anomalies": {
+            "get": {
+                "description": "get a list of requests' anomalies by root_ids",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "anomalies"
+                ],
+                "summary": "Get anomalies",
+                "parameters": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Root IDs",
+                        "name": "root_ids",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "description": "Anomaly Cases",
+                        "name": "anomaly_cases",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetRequestsAnomaliesByIdsResponseDto"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetRequestsAnomaliesByIdsResponseDto"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetRequestsAnomaliesByIdsResponseDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/custom_requests_anomalies": {
+            "post": {
+                "description": "sets anomaly data from provided in request body json",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "anomalies"
+                ],
+                "summary": "Set custom anomaly marked by user",
+                "parameters": [
+                    {
+                        "description": "Custom anomaly body",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.PostCustomAnomaliesRequestDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountPointsResponseDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountPointsResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountPointsResponseDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "description": "simple endpoint to check whether service is alive",
+                "tags": [
+                    "health"
+                ],
+                "summary": "Health check",
+                "responses": {}
+            }
+        },
+        "/points": {
+            "get": {
+                "description": "returns a list of points in selected area",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "points"
+                ],
+                "summary": "Get points by selected area and region",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Region",
+                        "name": "region",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Lower time limit (RFC3339 formatted)",
+                        "name": "datetime_from",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Upper time limit (RFC3339 formatted)",
+                        "name": "datetime_to",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "Bottom left X of screen",
+                        "name": "x_min",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Bottom left Y of screen",
+                        "name": "y_min",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Top right X of screen",
+                        "name": "x_max",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Top right Y of screen",
+                        "name": "y_max",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Urgency Category",
+                        "name": "urgency_category",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetPointsResponseDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetPointsResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetPointsResponseDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/points/count": {
+            "get": {
+                "description": "returns amount of entities",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "points"
+                ],
+                "summary": "Count points by selected area and region",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Region",
+                        "name": "region",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Lower time limit (RFC3339 formatted)",
+                        "name": "datetime_from",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Upper time limit (RFC3339 formatted)",
+                        "name": "datetime_to",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "Bottom left X of screen",
+                        "name": "x_min",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Bottom left Y of screen",
+                        "name": "y_min",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Top right X of screen",
+                        "name": "x_max",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Top right Y of screen",
+                        "name": "y_max",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Urgency Category",
+                        "name": "urgency_category",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountPointsResponseDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountPointsResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountPointsResponseDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/regions": {
+            "get": {
+                "description": "get a list of moscow regions",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "regions"
+                ],
+                "summary": "Get regions",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetRegionsResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetRegionsResponseDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/requests": {
+            "get": {
+                "description": "get a list of requests by root_ids",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "requests"
+                ],
+                "summary": "Get requests",
+                "parameters": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Root IDs",
+                        "name": "root_ids",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetRequestsByIdsResponseDto"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetRequestsByIdsResponseDto"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetRequestsByIdsResponseDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/requests_full": {
+            "get": {
+                "description": "returns a list of points in selected area",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "requests_full"
+                ],
+                "summary": "Get points by selected area and region",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Region",
+                        "name": "region",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Lower time limit (RFC3339 formatted)",
+                        "name": "datetime_from",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Upper time limit (RFC3339 formatted)",
+                        "name": "datetime_to",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "Bottom left X of screen",
+                        "name": "x_min",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "Bottom left Y of screen",
+                        "name": "y_min",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "Top right X of screen",
+                        "name": "x_max",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "Top right Y of screen",
+                        "name": "y_max",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Urgency Category",
+                        "name": "urgency_category",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "description": "Anomaly Cases",
+                        "name": "anomaly_cases",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetRequestsFullResponseDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetRequestsFullResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetRequestsFullResponseDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/requests_full/count": {
+            "get": {
+                "description": "returns amount of requests full",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "requests_full"
+                ],
+                "summary": "Count requests fulls by selected area and region",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Region",
+                        "name": "region",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Lower time limit (RFC3339 formatted)",
+                        "name": "datetime_from",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Upper time limit (RFC3339 formatted)",
+                        "name": "datetime_to",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "Bottom left X of screen",
+                        "name": "x_min",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Bottom left Y of screen",
+                        "name": "y_min",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Top right X of screen",
+                        "name": "x_max",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Top right Y of screen",
+                        "name": "y_max",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Urgency Category",
+                        "name": "urgency_category",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "description": "Anomaly Cases",
+                        "name": "anomaly_cases",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountRequestsFullResponseDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountRequestsFullResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountRequestsFullResponseDTO"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.CountPointsResponseDTO": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "dto.CountRequestsFullResponseDTO": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "dto.GetPointsResponseDTO": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "points": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.HCSPoint"
+                    }
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "dto.GetRegionsResponseDTO": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "regions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "dto.GetRequestsAnomaliesByIdsResponseDto": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "requests_anomalies": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.RequestAnomaly"
+                    }
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "dto.GetRequestsByIdsResponseDto": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "requests": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.Request"
+                    }
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "dto.GetRequestsFullResponseDTO": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "requests": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.RequestFull"
+                    }
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "dto.PostCustomAnomaliesRequestDTO": {
+            "type": "object",
+            "required": [
+                "is_anomaly",
+                "root_id"
+            ],
+            "properties": {
+                "is_anomaly": {
+                    "type": "boolean"
+                },
+                "root_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.HCSPoint": {
+            "type": "object",
+            "properties": {
+                "root_id": {
+                    "type": "string"
+                },
+                "x": {
+                    "type": "number"
+                },
+                "y": {
+                    "type": "number"
+                }
+            }
+        },
+        "entity.Request": {
+            "type": "object",
+            "properties": {
+                "adress_of_problem": {
+                    "type": "string"
+                },
+                "adress_unom": {
+                    "type": "integer"
+                },
+                "alerted_feature": {
+                    "type": "string"
+                },
+                "being_on_revision": {
+                    "type": "string"
+                },
+                "closure_date": {
+                    "type": "string"
+                },
+                "code_of_deffect": {
+                    "type": "string"
+                },
+                "commentaries": {
+                    "type": "string"
+                },
+                "date_of_creation": {
+                    "type": "string"
+                },
+                "date_of_last_return_for_revision": {
+                    "type": "string"
+                },
+                "date_of_previous_request_close": {
+                    "type": "string"
+                },
+                "date_of_review": {
+                    "type": "string"
+                },
+                "date_of_start": {
+                    "type": "string"
+                },
+                "deffect_category_id": {
+                    "type": "string"
+                },
+                "deffect_category_name": {
+                    "type": "string"
+                },
+                "deffect_category_name_eng": {
+                    "type": "string"
+                },
+                "deffect_id": {
+                    "type": "string"
+                },
+                "deffect_name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "dispetchers_number": {
+                    "type": "string"
+                },
+                "district": {
+                    "type": "string"
+                },
+                "district_code": {
+                    "type": "string"
+                },
+                "efficiency": {
+                    "type": "string"
+                },
+                "efficiency_eng": {
+                    "type": "string"
+                },
+                "flat_number": {
+                    "type": "string"
+                },
+                "floor": {
+                    "type": "string"
+                },
+                "grade_for_service": {
+                    "type": "string"
+                },
+                "grade_for_service_eng": {
+                    "type": "string"
+                },
+                "guarding_events": {
+                    "type": "string"
+                },
+                "hood": {
+                    "type": "string"
+                },
+                "hood_code": {
+                    "type": "string"
+                },
+                "id_guarding_events": {
+                    "type": "string"
+                },
+                "id_of_reason_for_decline": {
+                    "type": "string"
+                },
+                "id_of_reason_for_decline_of_org": {
+                    "type": "string"
+                },
+                "id_work_type_done": {
+                    "type": "string"
+                },
+                "incident_feature": {
+                    "type": "string"
+                },
+                "inn_of_performing_company": {
+                    "type": "string"
+                },
+                "last_name_redacted": {
+                    "type": "string"
+                },
+                "mos_ru_request_number": {
+                    "type": "string"
+                },
+                "name_of_creator": {
+                    "type": "string"
+                },
+                "name_of_source": {
+                    "type": "string"
+                },
+                "name_of_source_eng": {
+                    "type": "string"
+                },
+                "need_for_revision": {
+                    "type": "string"
+                },
+                "number_of_maternal": {
+                    "type": "string"
+                },
+                "owner_company": {
+                    "type": "string"
+                },
+                "payed_by_card": {
+                    "type": "string"
+                },
+                "payment_category": {
+                    "type": "string"
+                },
+                "payment_category_eng": {
+                    "type": "string"
+                },
+                "performing_company": {
+                    "type": "string"
+                },
+                "porch": {
+                    "type": "string"
+                },
+                "presence_of_question": {
+                    "type": "string"
+                },
+                "reason_for_decline": {
+                    "type": "string"
+                },
+                "reason_for_decline_of_org": {
+                    "type": "string"
+                },
+                "request_number": {
+                    "type": "string"
+                },
+                "request_status": {
+                    "type": "string"
+                },
+                "request_status_eng": {
+                    "type": "string"
+                },
+                "review": {
+                    "type": "string"
+                },
+                "role_of_user": {
+                    "type": "string"
+                },
+                "root_id": {
+                    "type": "string"
+                },
+                "root_identificator_of_maternal": {
+                    "type": "string"
+                },
+                "serving_company": {
+                    "type": "string"
+                },
+                "short_deffect_name": {
+                    "type": "string"
+                },
+                "times_returned": {
+                    "type": "integer"
+                },
+                "urgency_category": {
+                    "type": "string"
+                },
+                "urgency_category_eng": {
+                    "type": "string"
+                },
+                "used_material": {
+                    "type": "string"
+                },
+                "version_id": {
+                    "type": "string"
+                },
+                "wanted_time_from": {
+                    "type": "string"
+                },
+                "wanted_time_to": {
+                    "type": "string"
+                },
+                "work_type_done": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.RequestAnomaly": {
+            "type": "object",
+            "properties": {
+                "anomaly_cases": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "is_anomaly": {
+                    "type": "boolean"
+                },
+                "is_custom": {
+                    "type": "boolean"
+                },
+                "root_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.RequestFull": {
+            "type": "object",
+            "properties": {
+                "adress_of_problem": {
+                    "type": "string"
+                },
+                "adress_unom": {
+                    "type": "integer"
+                },
+                "alerted_feature": {
+                    "type": "string"
+                },
+                "anomaly_cases": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "being_on_revision": {
+                    "type": "string"
+                },
+                "closure_date": {
+                    "type": "string"
+                },
+                "code_of_deffect": {
+                    "type": "string"
+                },
+                "commentaries": {
+                    "type": "string"
+                },
+                "date_of_creation": {
+                    "type": "string"
+                },
+                "date_of_last_return_for_revision": {
+                    "type": "string"
+                },
+                "date_of_previous_request_close": {
+                    "type": "string"
+                },
+                "date_of_review": {
+                    "type": "string"
+                },
+                "date_of_start": {
+                    "type": "string"
+                },
+                "deffect_category_id": {
+                    "type": "string"
+                },
+                "deffect_category_name": {
+                    "type": "string"
+                },
+                "deffect_category_name_eng": {
+                    "type": "string"
+                },
+                "deffect_id": {
+                    "type": "string"
+                },
+                "deffect_name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "dispetchers_number": {
+                    "type": "string"
+                },
+                "district": {
+                    "type": "string"
+                },
+                "district_code": {
+                    "type": "string"
+                },
+                "efficiency": {
+                    "type": "string"
+                },
+                "efficiency_eng": {
+                    "type": "string"
+                },
+                "flat_number": {
+                    "type": "string"
+                },
+                "floor": {
+                    "type": "string"
+                },
+                "grade_for_service": {
+                    "type": "string"
+                },
+                "grade_for_service_eng": {
+                    "type": "string"
+                },
+                "guarding_events": {
+                    "type": "string"
+                },
+                "hood": {
+                    "type": "string"
+                },
+                "hood_code": {
+                    "type": "string"
+                },
+                "id_guarding_events": {
+                    "type": "string"
+                },
+                "id_of_reason_for_decline": {
+                    "type": "string"
+                },
+                "id_of_reason_for_decline_of_org": {
+                    "type": "string"
+                },
+                "id_work_type_done": {
+                    "type": "string"
+                },
+                "incident_feature": {
+                    "type": "string"
+                },
+                "inn_of_performing_company": {
+                    "type": "string"
+                },
+                "is_anomaly": {
+                    "type": "boolean"
+                },
+                "is_custom": {
+                    "type": "boolean"
+                },
+                "last_name_redacted": {
+                    "type": "string"
+                },
+                "mos_ru_request_number": {
+                    "type": "string"
+                },
+                "name_of_creator": {
+                    "type": "string"
+                },
+                "name_of_source": {
+                    "type": "string"
+                },
+                "name_of_source_eng": {
+                    "type": "string"
+                },
+                "need_for_revision": {
+                    "type": "string"
+                },
+                "number_of_maternal": {
+                    "type": "string"
+                },
+                "owner_company": {
+                    "type": "string"
+                },
+                "payed_by_card": {
+                    "type": "string"
+                },
+                "payment_category": {
+                    "type": "string"
+                },
+                "payment_category_eng": {
+                    "type": "string"
+                },
+                "performing_company": {
+                    "type": "string"
+                },
+                "porch": {
+                    "type": "string"
+                },
+                "presence_of_question": {
+                    "type": "string"
+                },
+                "reason_for_decline": {
+                    "type": "string"
+                },
+                "reason_for_decline_of_org": {
+                    "type": "string"
+                },
+                "request_number": {
+                    "type": "string"
+                },
+                "request_status": {
+                    "type": "string"
+                },
+                "request_status_eng": {
+                    "type": "string"
+                },
+                "review": {
+                    "type": "string"
+                },
+                "role_of_user": {
+                    "type": "string"
+                },
+                "root_id": {
+                    "type": "string"
+                },
+                "root_identificator_of_maternal": {
+                    "type": "string"
+                },
+                "serving_company": {
+                    "type": "string"
+                },
+                "short_deffect_name": {
+                    "type": "string"
+                },
+                "times_returned": {
+                    "type": "integer"
+                },
+                "urgency_category": {
+                    "type": "string"
+                },
+                "urgency_category_eng": {
+                    "type": "string"
+                },
+                "used_material": {
+                    "type": "string"
+                },
+                "version_id": {
+                    "type": "string"
+                },
+                "wanted_time_from": {
+                    "type": "string"
+                },
+                "wanted_time_to": {
+                    "type": "string"
+                },
+                "work_type_done": {
+                    "type": "string"
+                },
+                "x": {
+                    "type": "number"
+                },
+                "y": {
+                    "type": "number"
+                }
+            }
+        }
+    }
+}

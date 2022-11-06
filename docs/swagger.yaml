@@ -1,0 +1,823 @@
+basePath: /api/v1
+definitions:
+  dto.CountPointsResponseDTO:
+    properties:
+      count:
+        type: integer
+      error:
+        type: string
+      success:
+        type: boolean
+    type: object
+  dto.CountRequestsFullResponseDTO:
+    properties:
+      count:
+        type: integer
+      error:
+        type: string
+      success:
+        type: boolean
+    type: object
+  dto.GetPointsResponseDTO:
+    properties:
+      count:
+        type: integer
+      error:
+        type: string
+      points:
+        items:
+          $ref: '#/definitions/entity.HCSPoint'
+        type: array
+      success:
+        type: boolean
+    type: object
+  dto.GetRegionsResponseDTO:
+    properties:
+      count:
+        type: integer
+      error:
+        type: string
+      regions:
+        items:
+          type: string
+        type: array
+      success:
+        type: boolean
+    type: object
+  dto.GetRequestsAnomaliesByIdsResponseDto:
+    properties:
+      count:
+        type: integer
+      error:
+        type: string
+      requests_anomalies:
+        items:
+          $ref: '#/definitions/entity.RequestAnomaly'
+        type: array
+      success:
+        type: boolean
+    type: object
+  dto.GetRequestsByIdsResponseDto:
+    properties:
+      count:
+        type: integer
+      error:
+        type: string
+      requests:
+        items:
+          $ref: '#/definitions/entity.Request'
+        type: array
+      success:
+        type: boolean
+    type: object
+  dto.GetRequestsFullResponseDTO:
+    properties:
+      count:
+        type: integer
+      error:
+        type: string
+      requests:
+        items:
+          $ref: '#/definitions/entity.RequestFull'
+        type: array
+      success:
+        type: boolean
+    type: object
+  dto.PostCustomAnomaliesRequestDTO:
+    properties:
+      is_anomaly:
+        type: boolean
+      root_id:
+        type: string
+    required:
+    - is_anomaly
+    - root_id
+    type: object
+  entity.HCSPoint:
+    properties:
+      root_id:
+        type: string
+      x:
+        type: number
+      "y":
+        type: number
+    type: object
+  entity.Request:
+    properties:
+      adress_of_problem:
+        type: string
+      adress_unom:
+        type: integer
+      alerted_feature:
+        type: string
+      being_on_revision:
+        type: string
+      closure_date:
+        type: string
+      code_of_deffect:
+        type: string
+      commentaries:
+        type: string
+      date_of_creation:
+        type: string
+      date_of_last_return_for_revision:
+        type: string
+      date_of_previous_request_close:
+        type: string
+      date_of_review:
+        type: string
+      date_of_start:
+        type: string
+      deffect_category_id:
+        type: string
+      deffect_category_name:
+        type: string
+      deffect_category_name_eng:
+        type: string
+      deffect_id:
+        type: string
+      deffect_name:
+        type: string
+      description:
+        type: string
+      dispetchers_number:
+        type: string
+      district:
+        type: string
+      district_code:
+        type: string
+      efficiency:
+        type: string
+      efficiency_eng:
+        type: string
+      flat_number:
+        type: string
+      floor:
+        type: string
+      grade_for_service:
+        type: string
+      grade_for_service_eng:
+        type: string
+      guarding_events:
+        type: string
+      hood:
+        type: string
+      hood_code:
+        type: string
+      id_guarding_events:
+        type: string
+      id_of_reason_for_decline:
+        type: string
+      id_of_reason_for_decline_of_org:
+        type: string
+      id_work_type_done:
+        type: string
+      incident_feature:
+        type: string
+      inn_of_performing_company:
+        type: string
+      last_name_redacted:
+        type: string
+      mos_ru_request_number:
+        type: string
+      name_of_creator:
+        type: string
+      name_of_source:
+        type: string
+      name_of_source_eng:
+        type: string
+      need_for_revision:
+        type: string
+      number_of_maternal:
+        type: string
+      owner_company:
+        type: string
+      payed_by_card:
+        type: string
+      payment_category:
+        type: string
+      payment_category_eng:
+        type: string
+      performing_company:
+        type: string
+      porch:
+        type: string
+      presence_of_question:
+        type: string
+      reason_for_decline:
+        type: string
+      reason_for_decline_of_org:
+        type: string
+      request_number:
+        type: string
+      request_status:
+        type: string
+      request_status_eng:
+        type: string
+      review:
+        type: string
+      role_of_user:
+        type: string
+      root_id:
+        type: string
+      root_identificator_of_maternal:
+        type: string
+      serving_company:
+        type: string
+      short_deffect_name:
+        type: string
+      times_returned:
+        type: integer
+      urgency_category:
+        type: string
+      urgency_category_eng:
+        type: string
+      used_material:
+        type: string
+      version_id:
+        type: string
+      wanted_time_from:
+        type: string
+      wanted_time_to:
+        type: string
+      work_type_done:
+        type: string
+    type: object
+  entity.RequestAnomaly:
+    properties:
+      anomaly_cases:
+        items:
+          type: integer
+        type: array
+      is_anomaly:
+        type: boolean
+      is_custom:
+        type: boolean
+      root_id:
+        type: string
+    type: object
+  entity.RequestFull:
+    properties:
+      adress_of_problem:
+        type: string
+      adress_unom:
+        type: integer
+      alerted_feature:
+        type: string
+      anomaly_cases:
+        items:
+          type: integer
+        type: array
+      being_on_revision:
+        type: string
+      closure_date:
+        type: string
+      code_of_deffect:
+        type: string
+      commentaries:
+        type: string
+      date_of_creation:
+        type: string
+      date_of_last_return_for_revision:
+        type: string
+      date_of_previous_request_close:
+        type: string
+      date_of_review:
+        type: string
+      date_of_start:
+        type: string
+      deffect_category_id:
+        type: string
+      deffect_category_name:
+        type: string
+      deffect_category_name_eng:
+        type: string
+      deffect_id:
+        type: string
+      deffect_name:
+        type: string
+      description:
+        type: string
+      dispetchers_number:
+        type: string
+      district:
+        type: string
+      district_code:
+        type: string
+      efficiency:
+        type: string
+      efficiency_eng:
+        type: string
+      flat_number:
+        type: string
+      floor:
+        type: string
+      grade_for_service:
+        type: string
+      grade_for_service_eng:
+        type: string
+      guarding_events:
+        type: string
+      hood:
+        type: string
+      hood_code:
+        type: string
+      id_guarding_events:
+        type: string
+      id_of_reason_for_decline:
+        type: string
+      id_of_reason_for_decline_of_org:
+        type: string
+      id_work_type_done:
+        type: string
+      incident_feature:
+        type: string
+      inn_of_performing_company:
+        type: string
+      is_anomaly:
+        type: boolean
+      is_custom:
+        type: boolean
+      last_name_redacted:
+        type: string
+      mos_ru_request_number:
+        type: string
+      name_of_creator:
+        type: string
+      name_of_source:
+        type: string
+      name_of_source_eng:
+        type: string
+      need_for_revision:
+        type: string
+      number_of_maternal:
+        type: string
+      owner_company:
+        type: string
+      payed_by_card:
+        type: string
+      payment_category:
+        type: string
+      payment_category_eng:
+        type: string
+      performing_company:
+        type: string
+      porch:
+        type: string
+      presence_of_question:
+        type: string
+      reason_for_decline:
+        type: string
+      reason_for_decline_of_org:
+        type: string
+      request_number:
+        type: string
+      request_status:
+        type: string
+      request_status_eng:
+        type: string
+      review:
+        type: string
+      role_of_user:
+        type: string
+      root_id:
+        type: string
+      root_identificator_of_maternal:
+        type: string
+      serving_company:
+        type: string
+      short_deffect_name:
+        type: string
+      times_returned:
+        type: integer
+      urgency_category:
+        type: string
+      urgency_category_eng:
+        type: string
+      used_material:
+        type: string
+      version_id:
+        type: string
+      wanted_time_from:
+        type: string
+      wanted_time_to:
+        type: string
+      work_type_done:
+        type: string
+      x:
+        type: number
+      "y":
+        type: number
+    type: object
+host: 65.108.145.234:15400
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: TechPotion ЛЦТ2022 Swagger
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger for TechPotion's leadershack2022 solution
+  version: "1.0"
+paths:
+  /anomalies:
+    get:
+      consumes:
+      - application/json
+      description: get a list of requests' anomalies by root_ids
+      parameters:
+      - description: Root IDs
+        in: query
+        items:
+          type: string
+        name: root_ids
+        required: true
+        type: array
+      - description: Anomaly Cases
+        in: query
+        items:
+          type: integer
+        name: anomaly_cases
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetRequestsAnomaliesByIdsResponseDto'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.GetRequestsAnomaliesByIdsResponseDto'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.GetRequestsAnomaliesByIdsResponseDto'
+      summary: Get anomalies
+      tags:
+      - anomalies
+  /custom_requests_anomalies:
+    post:
+      consumes:
+      - application/json
+      description: sets anomaly data from provided in request body json
+      parameters:
+      - description: Custom anomaly body
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.PostCustomAnomaliesRequestDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.CountPointsResponseDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.CountPointsResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.CountPointsResponseDTO'
+      summary: Set custom anomaly marked by user
+      tags:
+      - anomalies
+  /health:
+    get:
+      description: simple endpoint to check whether service is alive
+      responses: {}
+      summary: Health check
+      tags:
+      - health
+  /points:
+    get:
+      consumes:
+      - application/json
+      description: returns a list of points in selected area
+      parameters:
+      - description: Region
+        in: query
+        name: region
+        required: true
+        type: string
+      - description: Lower time limit (RFC3339 formatted)
+        in: query
+        name: datetime_from
+        required: true
+        type: string
+      - description: Upper time limit (RFC3339 formatted)
+        in: query
+        name: datetime_to
+        required: true
+        type: string
+      - description: Bottom left X of screen
+        in: query
+        name: x_min
+        type: number
+      - description: Bottom left Y of screen
+        in: query
+        name: y_min
+        type: number
+      - description: Top right X of screen
+        in: query
+        name: x_max
+        type: number
+      - description: Top right Y of screen
+        in: query
+        name: y_max
+        type: number
+      - description: Limit
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        required: true
+        type: integer
+      - description: Urgency Category
+        in: query
+        name: urgency_category
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetPointsResponseDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.GetPointsResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.GetPointsResponseDTO'
+      summary: Get points by selected area and region
+      tags:
+      - points
+  /points/count:
+    get:
+      consumes:
+      - application/json
+      description: returns amount of entities
+      parameters:
+      - description: Region
+        in: query
+        name: region
+        required: true
+        type: string
+      - description: Lower time limit (RFC3339 formatted)
+        in: query
+        name: datetime_from
+        required: true
+        type: string
+      - description: Upper time limit (RFC3339 formatted)
+        in: query
+        name: datetime_to
+        required: true
+        type: string
+      - description: Bottom left X of screen
+        in: query
+        name: x_min
+        type: number
+      - description: Bottom left Y of screen
+        in: query
+        name: y_min
+        type: number
+      - description: Top right X of screen
+        in: query
+        name: x_max
+        type: number
+      - description: Top right Y of screen
+        in: query
+        name: y_max
+        type: number
+      - description: Urgency Category
+        in: query
+        name: urgency_category
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CountPointsResponseDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.CountPointsResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.CountPointsResponseDTO'
+      summary: Count points by selected area and region
+      tags:
+      - points
+  /regions:
+    get:
+      consumes:
+      - application/json
+      description: get a list of moscow regions
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetRegionsResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.GetRegionsResponseDTO'
+      summary: Get regions
+      tags:
+      - regions
+  /requests:
+    get:
+      consumes:
+      - application/json
+      description: get a list of requests by root_ids
+      parameters:
+      - description: Root IDs
+        in: query
+        items:
+          type: string
+        name: root_ids
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetRequestsByIdsResponseDto'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.GetRequestsByIdsResponseDto'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.GetRequestsByIdsResponseDto'
+      summary: Get requests
+      tags:
+      - requests
+  /requests_full:
+    get:
+      consumes:
+      - application/json
+      description: returns a list of points in selected area
+      parameters:
+      - description: Region
+        in: query
+        name: region
+        required: true
+        type: string
+      - description: Lower time limit (RFC3339 formatted)
+        in: query
+        name: datetime_from
+        required: true
+        type: string
+      - description: Upper time limit (RFC3339 formatted)
+        in: query
+        name: datetime_to
+        required: true
+        type: string
+      - description: Bottom left X of screen
+        in: query
+        name: x_min
+        required: true
+        type: number
+      - description: Bottom left Y of screen
+        in: query
+        name: y_min
+        required: true
+        type: number
+      - description: Top right X of screen
+        in: query
+        name: x_max
+        required: true
+        type: number
+      - description: Top right Y of screen
+        in: query
+        name: y_max
+        required: true
+        type: number
+      - description: Limit
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        required: true
+        type: integer
+      - description: Urgency Category
+        in: query
+        name: urgency_category
+        type: string
+      - description: Anomaly Cases
+        in: query
+        items:
+          type: integer
+        name: anomaly_cases
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetRequestsFullResponseDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.GetRequestsFullResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.GetRequestsFullResponseDTO'
+      summary: Get points by selected area and region
+      tags:
+      - requests_full
+  /requests_full/count:
+    get:
+      consumes:
+      - application/json
+      description: returns amount of requests full
+      parameters:
+      - description: Region
+        in: query
+        name: region
+        required: true
+        type: string
+      - description: Lower time limit (RFC3339 formatted)
+        in: query
+        name: datetime_from
+        required: true
+        type: string
+      - description: Upper time limit (RFC3339 formatted)
+        in: query
+        name: datetime_to
+        required: true
+        type: string
+      - description: Bottom left X of screen
+        in: query
+        name: x_min
+        type: number
+      - description: Bottom left Y of screen
+        in: query
+        name: y_min
+        type: number
+      - description: Top right X of screen
+        in: query
+        name: x_max
+        type: number
+      - description: Top right Y of screen
+        in: query
+        name: y_max
+        type: number
+      - description: Urgency Category
+        in: query
+        name: urgency_category
+        type: string
+      - description: Anomaly Cases
+        in: query
+        items:
+          type: integer
+        name: anomaly_cases
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CountRequestsFullResponseDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.CountRequestsFullResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.CountRequestsFullResponseDTO'
+      summary: Count requests fulls by selected area and region
+      tags:
+      - requests_full
+schemes:
+- http
+swagger: "2.0"
