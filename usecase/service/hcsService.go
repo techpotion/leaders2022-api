@@ -18,6 +18,14 @@ type HCSService interface {
 	GetRequestsByClosureTime(ctx context.Context, from, to time.Time, limit, offset int) ([]*entity.Request, error)
 	CountRequestsFull(ctx context.Context, filters *dto.CountRequestsFullRequestDTO) (int, error)
 	GetRequestsFull(ctx context.Context, filters *dto.GetRequestsFullRequestDTO) ([]*entity.RequestFull, error)
+	GetUniqueRegions(ctx context.Context) ([]string, error)
+	GetUniqueServingCompanies(ctx context.Context) ([]string, error)
+	GetUniqueOwnerCompanies(ctx context.Context) ([]string, error)
+	GetUniqueDeffectCategories(ctx context.Context) ([]string, error)
+	GetUniqueWorkTypes(ctx context.Context) ([]string, error)
+	GetRequestsByDispatcher(ctx context.Context, dateFrom, dateTo time.Time, dispNumber string) ([]*entity.Request, error)
+	GetUniqueDispatchers(ctx context.Context) ([]string, error)
+	GetRegionArea(ctx context.Context, region string) (string, error)
 }
 
 type hcsService struct {
@@ -69,4 +77,40 @@ func (s *hcsService) GetRequestsFull(ctx context.Context, filters *dto.GetReques
 	}
 
 	return s.hcsRepository.GetRequestsFull(ctx, filters)
+}
+
+func (s *hcsService) GetUniqueRegions(ctx context.Context) ([]string, error) {
+	return s.hcsRepository.GetUniqueRegions(ctx)
+}
+
+func (s *hcsService) GetUniqueServingCompanies(ctx context.Context) ([]string, error) {
+	return s.hcsRepository.GetUniqueServingCompanies(ctx)
+}
+
+func (s *hcsService) GetUniqueOwnerCompanies(ctx context.Context) ([]string, error) {
+	return s.hcsRepository.GetUniqueOwnerCompanies(ctx)
+}
+
+func (s *hcsService) GetUniqueDeffectCategories(ctx context.Context) ([]string, error) {
+	return s.hcsRepository.GetUniqueDeffectCategories(ctx)
+}
+
+func (s *hcsService) GetUniqueWorkTypes(ctx context.Context) ([]string, error) {
+	return s.hcsRepository.GetUniqueWorkTypes(ctx)
+}
+
+func (s *hcsService) GetRequestsByDispatcher(
+	ctx context.Context,
+	dateFrom, dateTo time.Time,
+	dispNumber string,
+) ([]*entity.Request, error) {
+	return s.hcsRepository.GetRequestsByDispatcher(ctx, dateFrom, dateTo, dispNumber)
+}
+
+func (s *hcsService) GetUniqueDispatchers(ctx context.Context) ([]string, error) {
+	return s.hcsRepository.GetUniqueDispatchers(ctx)
+}
+
+func (s *hcsService) GetRegionArea(ctx context.Context, region string) (string, error) {
+	return s.hcsRepository.GetRegionArea(ctx, region)
 }

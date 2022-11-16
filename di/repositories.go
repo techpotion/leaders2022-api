@@ -6,7 +6,6 @@ import (
 )
 
 func (di *DI) initRepositories(pgDB *database.Postgres) {
-	di.Repositories.MoscowRegionsRepository = repository.NewMoscowRegionsPostgresRepository(pgDB)
 	di.Repositories.HCSRepository = repository.NewHCSPostgresRepository(pgDB)
 	di.Repositories.LastAnomalyCheckJobRepository = repository.NewLastAnomalyCheckJobPostgresRepository(pgDB)
 	di.Repositories.RequestsAnomaliesRepository = repository.NewRequestsAnomaliesPostgresRepository(pgDB)

@@ -9,7 +9,7 @@ import (
 	"go.uber.org/zap"
 )
 
-// @Summary     Get points by selected area and region
+// @Summary     DEPRECATED Get points by selected area and region
 // @Description returns a list of points in selected area
 // @Tags        requests_full
 // @Accept      json

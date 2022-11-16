@@ -36,4 +36,6 @@ COPY --from=builder ${ARTIFACT} ${BINDIR}
 
 WORKDIR ${BINDIR}
 
+RUN mkdir data
+
 ENTRYPOINT [ "api" ]

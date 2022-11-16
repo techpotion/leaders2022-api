@@ -9,7 +9,7 @@ import (
 	"go.uber.org/zap"
 )
 
-// @Summary     Count requests fulls by selected area and region
+// @Summary     DEPRECATED Count requests fulls by selected area and region
 // @Description returns amount of requests full
 // @Tags        requests_full
 // @Accept      json

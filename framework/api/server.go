@@ -17,19 +17,27 @@ type Server struct {
 	server *http.Server
 	engine *gin.Engine
 
-	getUniqueMoscowRegionsUsecase    *usecase.GetUniqueMoscowRegionsUsecase
-	getPointsWithFiltersUsecase      *usecase.GetPointsWithFiltersUsecase
-	getRequestsByIdsUsecase          *usecase.GetRequestsByIdsUsecase
-	getRequestsAnomaliesByIdsUsecase *usecase.GetRequestsAnomaliesByIdsUsecase
-	getRequestsFullUsecase           *usecase.GetRequestsFullUsecase
-	countPointsWithFiltersUsecase    *usecase.CountPointsWithFiltersUsecase
-	countRequestsFullUsecase         *usecase.CountRequestsFullUsecase
-	setCustomRequestAnomalyUsecase   *usecase.SetCustomRequestAnomalyUsecase
+	getFiltersUsecase                        *usecase.GetFiltersUsecase
+	getPointsWithFiltersUsecase              *usecase.GetPointsWithFiltersUsecase
+	getRequestsByIdsUsecase                  *usecase.GetRequestsByIdsUsecase
+	getRequestsAnomaliesByIdsUsecase         *usecase.GetRequestsAnomaliesByIdsUsecase
+	getRequestsFullUsecase                   *usecase.GetRequestsFullUsecase
+	countPointsWithFiltersUsecase            *usecase.CountPointsWithFiltersUsecase
+	countRequestsFullUsecase                 *usecase.CountRequestsFullUsecase
+	setCustomRequestAnomalyUsecase           *usecase.SetCustomRequestAnomalyUsecase
+	countAnomaliesUsecase                    *usecase.CountAnomaliesUsecase
+	countAnomaliesGrouppedUsecase            *usecase.CountAnomaliesGrouppedUsecase
+	getAnomaliesAmountDynamicsUsecase        *usecase.GetAnomaliesAmountDynamicsUsecase
+	countAnomaliesCountByOwnerCompanies      *usecase.CountAnomaliesByOwnerCompaniesUsecase
+	countAnomaliesByServingCompaniesUsecase  *usecase.CountAnomaliesByServingCompaniesUsecase
+	countAnomaliesByDeffectCategoriesUsecase *usecase.CountAnomaliesByDeffectCategoriesUsecase
+	getEfficiencyPlotUsecase                 *usecase.GetEfficiencyPlotUsecase
+	getRegionAreaUsecase                     *usecase.GetRegionAreaUsecase
 }
 
 func NewServer(
 	cfg *config.Config,
-	getUniqueMoscowRegionsUsecase *usecase.GetUniqueMoscowRegionsUsecase,
+	getFiltersUsecase *usecase.GetFiltersUsecase,
 	getPointsWithFiltersUsecase *usecase.GetPointsWithFiltersUsecase,
 	getRequestsByIdsUsecase *usecase.GetRequestsByIdsUsecase,
 	getRequestsAnomaliesByIdsUsecase *usecase.GetRequestsAnomaliesByIdsUsecase,
@@ -37,6 +45,14 @@ func NewServer(
 	countPointsWithFiltersUsecase *usecase.CountPointsWithFiltersUsecase,
 	countRequestsFullUsecase *usecase.CountRequestsFullUsecase,
 	setCustomRequestAnomalyUsecase *usecase.SetCustomRequestAnomalyUsecase,
+	countAnomaliesUsecase *usecase.CountAnomaliesUsecase,
+	countAnomaliesGrouppedUsecase *usecase.CountAnomaliesGrouppedUsecase,
+	getAnomaliesAmountDynamicsUsecase *usecase.GetAnomaliesAmountDynamicsUsecase,
+	countAnomaliesCountByOwnerCompanies *usecase.CountAnomaliesByOwnerCompaniesUsecase,
+	countAnomaliesByServingCompaniesUsecase *usecase.CountAnomaliesByServingCompaniesUsecase,
+	countAnomaliesByDeffectCategoriesUsecase *usecase.CountAnomaliesByDeffectCategoriesUsecase,
+	getEfficiencyPlotUsecase *usecase.GetEfficiencyPlotUsecase,
+	getRegionAreaUsecase *usecase.GetRegionAreaUsecase,
 ) (*Server, error) {
 	gin.SetMode(gin.ReleaseMode)
 
@@ -62,16 +78,24 @@ func NewServer(
 	}
 
 	s := &Server{
-		server:                           srv,
-		engine:                           engine,
-		getUniqueMoscowRegionsUsecase:    getUniqueMoscowRegionsUsecase,
-		getPointsWithFiltersUsecase:      getPointsWithFiltersUsecase,
-		getRequestsByIdsUsecase:          getRequestsByIdsUsecase,
-		getRequestsAnomaliesByIdsUsecase: getRequestsAnomaliesByIdsUsecase,
-		getRequestsFullUsecase:           getRequestsFullUsecase,
-		countPointsWithFiltersUsecase:    countPointsWithFiltersUsecase,
-		countRequestsFullUsecase:         countRequestsFullUsecase,
-		setCustomRequestAnomalyUsecase:   setCustomRequestAnomalyUsecase,
+		server:                                   srv,
+		engine:                                   engine,
+		getFiltersUsecase:                        getFiltersUsecase,
+		getPointsWithFiltersUsecase:              getPointsWithFiltersUsecase,
+		getRequestsByIdsUsecase:                  getRequestsByIdsUsecase,
+		getRequestsAnomaliesByIdsUsecase:         getRequestsAnomaliesByIdsUsecase,
+		getRequestsFullUsecase:                   getRequestsFullUsecase,
+		countPointsWithFiltersUsecase:            countPointsWithFiltersUsecase,
+		countRequestsFullUsecase:                 countRequestsFullUsecase,
+		setCustomRequestAnomalyUsecase:           setCustomRequestAnomalyUsecase,
+		countAnomaliesUsecase:                    countAnomaliesUsecase,
+		countAnomaliesGrouppedUsecase:            countAnomaliesGrouppedUsecase,
+		getAnomaliesAmountDynamicsUsecase:        getAnomaliesAmountDynamicsUsecase,
+		countAnomaliesCountByOwnerCompanies:      countAnomaliesCountByOwnerCompanies,
+		countAnomaliesByServingCompaniesUsecase:  countAnomaliesByServingCompaniesUsecase,
+		countAnomaliesByDeffectCategoriesUsecase: countAnomaliesByDeffectCategoriesUsecase,
+		getEfficiencyPlotUsecase:                 getEfficiencyPlotUsecase,
+		getRegionAreaUsecase:                     getRegionAreaUsecase,
 	}
 
 	s.SetupRouter()

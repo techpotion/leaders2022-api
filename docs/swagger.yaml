@@ -1,5 +1,73 @@
 basePath: /api/v1
 definitions:
+  dto.CountAnomaliesByDeffectCategoriesResponseDTO:
+    properties:
+      count:
+        type: integer
+      deffect_categories:
+        items:
+          $ref: '#/definitions/entity.AnomaliesByDeffectCategory'
+        type: array
+      error:
+        type: string
+      success:
+        type: boolean
+    type: object
+  dto.CountAnomaliesByOwnerCompaniesResponseDTO:
+    properties:
+      count:
+        type: integer
+      error:
+        type: string
+      owner_companies:
+        items:
+          $ref: '#/definitions/entity.AnomaliesByOwnerCompany'
+        type: array
+      success:
+        type: boolean
+    type: object
+  dto.CountAnomaliesByServingCompaniesResponseDTO:
+    properties:
+      count:
+        type: integer
+      error:
+        type: string
+      serving_companies:
+        items:
+          $ref: '#/definitions/entity.AnomaliesByServingCompany'
+        type: array
+      success:
+        type: boolean
+    type: object
+  dto.CountAnomaliesDTO:
+    properties:
+      count:
+        type: integer
+      percent:
+        type: number
+    type: object
+  dto.CountAnomaliesGrouppedResponseDTO:
+    properties:
+      error:
+        type: string
+      groups_counts:
+        items:
+          $ref: '#/definitions/entity.CountAnomaliesGroupped'
+        type: array
+      success:
+        type: boolean
+    type: object
+  dto.CountAnomaliesResponseDTO:
+    properties:
+      current:
+        $ref: '#/definitions/dto.CountAnomaliesDTO'
+      error:
+        type: string
+      previous:
+        $ref: '#/definitions/dto.CountAnomaliesDTO'
+      success:
+        type: boolean
+    type: object
   dto.CountPointsResponseDTO:
     properties:
       count:
@@ -18,6 +86,67 @@ definitions:
       success:
         type: boolean
     type: object
+  dto.GetAnomaliesAmountDynamicsResponseDTO:
+    properties:
+      count:
+        type: integer
+      dynamics:
+        items:
+          $ref: '#/definitions/entity.AnomaliesDynamics'
+        type: array
+      error:
+        type: string
+      success:
+        type: boolean
+    type: object
+  dto.GetDeffectCategoriesResponseDTO:
+    properties:
+      count:
+        type: integer
+      deffect_categories:
+        items:
+          type: string
+        type: array
+      error:
+        type: string
+      success:
+        type: boolean
+    type: object
+  dto.GetDispatchersResponseDTO:
+    properties:
+      count:
+        type: integer
+      dispatcher:
+        items:
+          type: string
+        type: array
+      error:
+        type: string
+      success:
+        type: boolean
+    type: object
+  dto.GetEfficiencyPlotResponseDTO:
+    properties:
+      error:
+        type: string
+      filename:
+        type: string
+      success:
+        type: boolean
+    type: object
+  dto.GetOwnerCompaniesResponseDTO:
+    properties:
+      count:
+        type: integer
+      error:
+        type: string
+      owner_companies:
+        items:
+          type: string
+        type: array
+      success:
+        type: boolean
+    type: object
   dto.GetPointsResponseDTO:
     properties:
       count:
@@ -28,6 +157,15 @@ definitions:
         items:
           $ref: '#/definitions/entity.HCSPoint'
         type: array
+      success:
+        type: boolean
+    type: object
+  dto.GetRegionAreaResponseDTO:
+    properties:
+      area_polygon_geojson:
+        type: string
+      error:
+        type: string
       success:
         type: boolean
     type: object
@@ -83,6 +221,32 @@ definitions:
       success:
         type: boolean
     type: object
+  dto.GetServingCompaniesResponseDTO:
+    properties:
+      count:
+        type: integer
+      error:
+        type: string
+      serving_companies:
+        items:
+          type: string
+        type: array
+      success:
+        type: boolean
+    type: object
+  dto.GetWorkTypesResponseDTO:
+    properties:
+      count:
+        type: integer
+      error:
+        type: string
+      success:
+        type: boolean
+      work_types:
+        items:
+          type: string
+        type: array
+    type: object
   dto.PostCustomAnomaliesRequestDTO:
     properties:
       is_anomaly:
@@ -92,6 +256,49 @@ definitions:
     required:
     - is_anomaly
     - root_id
+    type: object
+  entity.AnomaliesByDeffectCategory:
+    properties:
+      count:
+        type: integer
+      deffect_category:
+        type: string
+      percent:
+        type: number
+    type: object
+  entity.AnomaliesByOwnerCompany:
+    properties:
+      count:
+        type: integer
+      owner_company:
+        type: string
+      percent:
+        type: number
+    type: object
+  entity.AnomaliesByServingCompany:
+    properties:
+      count:
+        type: integer
+      percent:
+        type: number
+      serving_company:
+        type: string
+    type: object
+  entity.AnomaliesDynamics:
+    properties:
+      amount:
+        type: integer
+      day:
+        type: string
+    type: object
+  entity.CountAnomaliesGroupped:
+    properties:
+      count:
+        type: integer
+      percent:
+        type: number
+      type:
+        type: integer
     type: object
   entity.HCSPoint:
     properties:
@@ -253,6 +460,8 @@ definitions:
         type: boolean
       is_custom:
         type: boolean
+      net_probability:
+        type: number
       root_id:
         type: string
     type: object
@@ -350,6 +559,8 @@ definitions:
         type: string
       need_for_revision:
         type: string
+      net_probability:
+        type: number
       number_of_maternal:
         type: string
       owner_company:
@@ -409,7 +620,7 @@ definitions:
       "y":
         type: number
     type: object
-host: 65.108.145.234:15400
+host: ""
 info:
   contact:
     email: support@swagger.io
@@ -490,6 +701,312 @@ paths:
       summary: Set custom anomaly marked by user
       tags:
       - anomalies
+  /dashboard/anomalies/amount_dynamics:
+    get:
+      consumes:
+      - application/json
+      description: returns anomalies amount dynamics
+      parameters:
+      - description: Region
+        in: query
+        name: region
+        required: true
+        type: string
+      - description: Lower time limit (RFC3339 formatted)
+        in: query
+        name: datetime_from
+        required: true
+        type: string
+      - description: Upper time limit (RFC3339 formatted)
+        in: query
+        name: datetime_to
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetAnomaliesAmountDynamicsResponseDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.GetAnomaliesAmountDynamicsResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.GetAnomaliesAmountDynamicsResponseDTO'
+      summary: Get anomalies amount dynamics
+      tags:
+      - dashboard
+  /dashboard/anomalies/count:
+    get:
+      consumes:
+      - application/json
+      description: returns amount and percent of anomalies
+      parameters:
+      - description: Region
+        in: query
+        name: region
+        required: true
+        type: string
+      - description: Lower time limit (RFC3339 formatted)
+        in: query
+        name: datetime_from
+        required: true
+        type: string
+      - description: Upper time limit (RFC3339 formatted)
+        in: query
+        name: datetime_to
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CountAnomaliesResponseDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.CountAnomaliesResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.CountAnomaliesResponseDTO'
+      summary: Count and get percent of anomalies
+      tags:
+      - dashboard
+  /dashboard/anomalies/count_groupped:
+    get:
+      consumes:
+      - application/json
+      description: returns amount of anomalies groupped by cases
+      parameters:
+      - description: Region
+        in: query
+        name: region
+        required: true
+        type: string
+      - description: Lower time limit (RFC3339 formatted)
+        in: query
+        name: datetime_from
+        required: true
+        type: string
+      - description: Upper time limit (RFC3339 formatted)
+        in: query
+        name: datetime_to
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CountAnomaliesGrouppedResponseDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.CountAnomaliesGrouppedResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.CountAnomaliesGrouppedResponseDTO'
+      summary: Count and get amount anomalies groupped by cases
+      tags:
+      - dashboard
+  /dashboard/anomalies/ratings/deffect_categories:
+    get:
+      consumes:
+      - application/json
+      description: returns rating of anomalies groupped by serving companies based
+        on deffect categories
+      parameters:
+      - description: Region
+        in: query
+        name: region
+        required: true
+        type: string
+      - description: Lower time limit (RFC3339 formatted)
+        in: query
+        name: datetime_from
+        required: true
+        type: string
+      - description: Upper time limit (RFC3339 formatted)
+        in: query
+        name: datetime_to
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CountAnomaliesByDeffectCategoriesResponseDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.CountAnomaliesByDeffectCategoriesResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.CountAnomaliesByDeffectCategoriesResponseDTO'
+      summary: Get rating of anomalies groupped by deffect categories
+      tags:
+      - dashboard
+  /dashboard/anomalies/ratings/owner_companies:
+    get:
+      consumes:
+      - application/json
+      description: returns rating of anomalies groupped by owner companies based on
+        anomalies count
+      parameters:
+      - description: Region
+        in: query
+        name: region
+        required: true
+        type: string
+      - description: Lower time limit (RFC3339 formatted)
+        in: query
+        name: datetime_from
+        required: true
+        type: string
+      - description: Upper time limit (RFC3339 formatted)
+        in: query
+        name: datetime_to
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CountAnomaliesByOwnerCompaniesResponseDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.CountAnomaliesByOwnerCompaniesResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.CountAnomaliesByOwnerCompaniesResponseDTO'
+      summary: Get rating of anomalies groupped by owner companies
+      tags:
+      - dashboard
+  /dashboard/anomalies/ratings/serving_companies:
+    get:
+      consumes:
+      - application/json
+      description: returns rating of anomalies groupped by serving companies based
+        on anomalies count
+      parameters:
+      - description: Region
+        in: query
+        name: region
+        required: true
+        type: string
+      - description: Lower time limit (RFC3339 formatted)
+        in: query
+        name: datetime_from
+        required: true
+        type: string
+      - description: Upper time limit (RFC3339 formatted)
+        in: query
+        name: datetime_to
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CountAnomaliesByServingCompaniesResponseDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.CountAnomaliesByServingCompaniesResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.CountAnomaliesByServingCompaniesResponseDTO'
+      summary: Get rating of anomalies groupped by serving companies
+      tags:
+      - dashboard
+  /dashboard/plots/efficiency:
+    get:
+      description: get an efficiency plot for dispatcher
+      parameters:
+      - description: Dispatcher (ОДС)
+        in: query
+        name: dispatcher
+        required: true
+        type: string
+      - description: Lower time limit (RFC3339 formatted)
+        in: query
+        name: datetime_from
+        required: true
+        type: string
+      - description: Upper time limit (RFC3339 formatted)
+        in: query
+        name: datetime_to
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetEfficiencyPlotResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.GetEfficiencyPlotResponseDTO'
+      summary: Get efficiency plot for dispatcher
+      tags:
+      - dashboard
+  /deffect_categories:
+    get:
+      consumes:
+      - application/json
+      description: get a list of deffect category_names
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetDeffectCategoriesResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.GetDeffectCategoriesResponseDTO'
+      summary: Get deffect category_names
+      tags:
+      - filters
+  /dispatchers:
+    get:
+      consumes:
+      - application/json
+      description: get a list of dispatchers
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetDispatchersResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.GetDispatchersResponseDTO'
+      summary: Get dispatchers
+      tags:
+      - filters
   /health:
     get:
       description: simple endpoint to check whether service is alive
@@ -497,6 +1014,25 @@ paths:
       summary: Health check
       tags:
       - health
+  /owner_companies:
+    get:
+      consumes:
+      - application/json
+      description: get a list of owner companies
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetOwnerCompaniesResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.GetOwnerCompaniesResponseDTO'
+      summary: Get owner companies
+      tags:
+      - filters
   /points:
     get:
       consumes:
@@ -544,10 +1080,48 @@ paths:
         name: offset
         required: true
         type: integer
-      - description: Urgency Category
+      - description: Serving companies (компания исполнитель)
         in: query
+        items:
+          type: string
+        name: serving_company
+        type: array
+      - description: Efficiency (результативность)
+        in: query
+        items:
+          type: string
+        name: efficiency
+        type: array
+      - description: Grade for service (оценка качества)
+        in: query
+        items:
+          type: string
+        name: grade_for_service
+        type: array
+      - description: Urgency category (срочность)
+        in: query
+        items:
+          type: string
         name: urgency_category
-        type: string
+        type: array
+      - description: Work type (вид работы)
+        in: query
+        items:
+          type: string
+        name: work_type
+        type: array
+      - description: Deffect category (категория дефекта)
+        in: query
+        items:
+          type: string
+        name: deffect_category
+        type: array
+      - description: Owner company (упр. организация)
+        in: query
+        items:
+          type: string
+        name: owner_company
+        type: array
       produces:
       - application/json
       responses:
@@ -603,10 +1177,48 @@ paths:
         in: query
         name: y_max
         type: number
-      - description: Urgency Category
+      - description: Serving companies (компания исполнитель)
         in: query
+        items:
+          type: string
+        name: serving_company
+        type: array
+      - description: Efficiency (результативность)
+        in: query
+        items:
+          type: string
+        name: efficiency
+        type: array
+      - description: Grade for service (оценка качества)
+        in: query
+        items:
+          type: string
+        name: grade_for_service
+        type: array
+      - description: Urgency category (срочность)
+        in: query
+        items:
+          type: string
         name: urgency_category
-        type: string
+        type: array
+      - description: Work type (вид работы)
+        in: query
+        items:
+          type: string
+        name: work_type
+        type: array
+      - description: Deffect category (категория дефекта)
+        in: query
+        items:
+          type: string
+        name: deffect_category
+        type: array
+      - description: Owner company (упр. организация)
+        in: query
+        items:
+          type: string
+        name: owner_company
+        type: array
       produces:
       - application/json
       responses:
@@ -642,6 +1254,35 @@ paths:
           schema:
             $ref: '#/definitions/dto.GetRegionsResponseDTO'
       summary: Get regions
+      tags:
+      - filters
+  /regions/{region}/area:
+    get:
+      consumes:
+      - application/json
+      description: get region's area geojson polygon
+      parameters:
+      - description: Region
+        in: path
+        name: region
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetRegionAreaResponseDTO'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.GetRegionAreaResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.GetRegionAreaResponseDTO'
+      summary: Get region area
       tags:
       - regions
   /requests:
@@ -750,7 +1391,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/dto.GetRequestsFullResponseDTO'
-      summary: Get points by selected area and region
+      summary: DEPRECATED Get points by selected area and region
       tags:
       - requests_full
   /requests_full/count:
@@ -815,9 +1456,47 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/dto.CountRequestsFullResponseDTO'
-      summary: Count requests fulls by selected area and region
+      summary: DEPRECATED Count requests fulls by selected area and region
       tags:
       - requests_full
+  /serving_companies:
+    get:
+      consumes:
+      - application/json
+      description: get a list of serving companies
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetServingCompaniesResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.GetServingCompaniesResponseDTO'
+      summary: Get serving companies
+      tags:
+      - filters
+  /work_types:
+    get:
+      consumes:
+      - application/json
+      description: get a list of work types
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetWorkTypesResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.GetWorkTypesResponseDTO'
+      summary: Get work types
+      tags:
+      - filters
 schemes:
 - http
 swagger: "2.0"

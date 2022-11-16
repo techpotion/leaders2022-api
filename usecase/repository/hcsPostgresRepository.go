@@ -21,6 +21,14 @@ type HCSRepository interface {
 	GetRequestsByClosureTime(ctx context.Context, from, to time.Time, limit, offset int) ([]*entity.Request, error)
 	CountRequestsFull(ctx context.Context, filters *dto.CountRequestsFullRequestDTO) (int, error)
 	GetRequestsFull(ctx context.Context, filters *dto.GetRequestsFullRequestDTO) ([]*entity.RequestFull, error)
+	GetUniqueRegions(ctx context.Context) ([]string, error)
+	GetUniqueServingCompanies(ctx context.Context) ([]string, error)
+	GetUniqueOwnerCompanies(ctx context.Context) ([]string, error)
+	GetUniqueDeffectCategories(ctx context.Context) ([]string, error)
+	GetUniqueWorkTypes(ctx context.Context) ([]string, error)
+	GetRequestsByDispatcher(ctx context.Context, dateFrom, dateTo time.Time, dispNumber string) ([]*entity.Request, error)
+	GetUniqueDispatchers(ctx context.Context) ([]string, error)
+	GetRegionArea(ctx context.Context, region string) (string, error)
 }
 
 type hcsPostgresRepository struct {
@@ -39,9 +47,16 @@ const countPointsWithFiltersStmt = `
         m.adress_unom = a.unom
     WHERE
         m.hood = $1 AND
-        m.date_of_creation BETWEEN COALESCE($2, m.date_of_creation) AND COALESCE($3, m.date_of_creation) AND
+        m.closure_date BETWEEN COALESCE($2, m.closure_date) AND COALESCE($3, m.closure_date) AND
         rectangle_contains($4, $5, $6, $7, a.center_x, a.center_y) AND
-        m.urgency_category = COALESCE($8, m.urgency_category);
+        (array_length($8::varchar[], 1)  IS NULL OR ARRAY[m.serving_company]       && ($8::varchar[])) AND
+        (array_length($9::varchar[], 1)  IS NULL OR ARRAY[m.efficiency]            &&  ($9::varchar[])) AND
+        (array_length($10::varchar[], 1) IS NULL OR ARRAY[m.grade_for_service]     && ($10::varchar[])) AND
+        (array_length($11::varchar[], 1) IS NULL OR ARRAY[m.urgency_category]      && ($11::varchar[])) AND
+        (array_length($12::varchar[], 1) IS NULL OR ARRAY[m.work_type_done]        && ($12::varchar[])) AND
+        (array_length($13::varchar[], 1) IS NULL OR ARRAY[m.deffect_category_name] && ($13::varchar[])) AND
+        (array_length($14::varchar[], 1) IS NULL OR ARRAY[m.owner_company]         && ($14::varchar[]))
+;
 `
 
 func (r *hcsPostgresRepository) CountPointsWithFilters(ctx context.Context, filters *dto.CountPointsRequestDTO) (int, error) {
@@ -54,7 +69,13 @@ func (r *hcsPostgresRepository) CountPointsWithFilters(ctx context.Context, filt
 		filters.DateTimeFrom, filters.DateTimeTo,
 		filters.XMin, filters.Ymin,
 		filters.XMax, filters.YMax,
+		filters.ServingCompany,
+		filters.Efficiency,
+		filters.GradeForService,
 		filters.UrgencyCategory,
+		filters.WorkType,
+		filters.DeffectCategory,
+		filters.OwnerCompany,
 	)
 
 	if err := row.Scan(&count); err != nil {
@@ -78,11 +99,17 @@ const getPointsWithFiltersStmt = `
         m.adress_unom = a.unom
     WHERE
         m.hood = $1 AND
-        m.date_of_creation BETWEEN COALESCE($2, m.date_of_creation) AND COALESCE($3, m.date_of_creation) AND
+        m.closure_date BETWEEN COALESCE($2, m.closure_date) AND COALESCE($3, m.closure_date) AND
         rectangle_contains($4, $5, $6, $7, a.center_x, a.center_y) AND
-        m.urgency_category = COALESCE($8, m.urgency_category)
-    LIMIT $9
-    OFFSET COALESCE($10, 0);
+        (array_length($8::varchar[], 1)  IS NULL OR ARRAY[m.serving_company]       && ($8::varchar[])) AND
+        (array_length($9::varchar[], 1)  IS NULL OR ARRAY[m.efficiency]            &&  ($9::varchar[])) AND
+        (array_length($10::varchar[], 1) IS NULL OR ARRAY[m.grade_for_service]     && ($10::varchar[])) AND
+        (array_length($11::varchar[], 1) IS NULL OR ARRAY[m.urgency_category]      && ($11::varchar[])) AND
+        (array_length($12::varchar[], 1) IS NULL OR ARRAY[m.work_type_done]        && ($12::varchar[])) AND
+        (array_length($13::varchar[], 1) IS NULL OR ARRAY[m.deffect_category_name] && ($13::varchar[])) AND
+        (array_length($14::varchar[], 1) IS NULL OR ARRAY[m.owner_company]         && ($14::varchar[]))
+    LIMIT $15
+    OFFSET COALESCE($16, 0);
 `
 
 func (r *hcsPostgresRepository) GetPointsWithFilters(
@@ -98,7 +125,13 @@ func (r *hcsPostgresRepository) GetPointsWithFilters(
 		filters.DateTimeFrom, filters.DateTimeTo,
 		filters.XMin, filters.Ymin,
 		filters.XMax, filters.YMax,
+		filters.ServingCompany,
+		filters.Efficiency,
+		filters.GradeForService,
 		filters.UrgencyCategory,
+		filters.WorkType,
+		filters.DeffectCategory,
+		filters.OwnerCompany,
 		filters.Limit, filters.Offest,
 	)
 	if err != nil {
@@ -315,7 +348,7 @@ WITH requests AS MATERIALIZED (
 		flat_number  = $3 AND
 		deffect_id   = $4 AND
 		closure_date < $5
-    ORDER BY date_of_creation
+    ORDER BY closure_date
 )
 
 SELECT MAX(closure_date) FROM requests;
@@ -557,7 +590,7 @@ const countRequestsFullStmt = `
     	ra.root_id = mt.root_id
     WHERE
         mt.hood = $1 AND
-        mt.date_of_creation BETWEEN COALESCE($2, mt.date_of_creation) AND COALESCE($3, mt.date_of_creation) AND
+        mt.closure_date BETWEEN COALESCE($2, mt.closure_date) AND COALESCE($3, mt.closure_date) AND
         rectangle_contains($4, $5, $6, $7, a.center_x, a.center_y) AND
         mt.urgency_category = COALESCE($8, mt.urgency_category) AND
         (array_length($9::int[], 1) IS NULL OR ra.anomaly_cases && ($9));
@@ -674,7 +707,7 @@ const getRequestsFullStmt = `
     	ra.root_id = mt.root_id
     WHERE
         mt.hood = $1 AND
-        mt.date_of_creation BETWEEN COALESCE($2, mt.date_of_creation) AND COALESCE($3, mt.date_of_creation) AND
+        mt.closure_date BETWEEN COALESCE($2, mt.closure_date) AND COALESCE($3, mt.closure_date) AND
         rectangle_contains($4, $5, $6, $7, a.center_x, a.center_y) AND
         mt.urgency_category = COALESCE($8, mt.urgency_category) AND
         (array_length($9::int[], 1) IS NULL OR ra.anomaly_cases && ($9))
@@ -804,4 +837,262 @@ func (r *hcsPostgresRepository) GetRequestsFull(ctx context.Context, filters *dt
 	}
 
 	return requests, nil
+}
+
+const maxHoods = 125
+
+func (r *hcsPostgresRepository) GetUniqueRegions(ctx context.Context) ([]string, error) {
+	hoods := make([]string, 0, maxHoods)
+
+	rows, err := r.db.Pool.Query(
+		ctx,
+		`SELECT DISTINCT(hood) FROM requests WHERE hood IS NOT NULL AND hood != '';`,
+	)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return hoods, nil
+		}
+
+		return nil, fmt.Errorf("failed to get unqiue regions: %w", err)
+	}
+
+	defer rows.Close()
+
+	var hood string
+
+	for rows.Next() {
+		if err = rows.Scan(&hood); err != nil {
+			return nil, fmt.Errorf("failed to scan regions: %w", err)
+		}
+
+		hoods = append(hoods, hood)
+	}
+
+	return hoods, nil
+}
+
+func (r *hcsPostgresRepository) GetUniqueServingCompanies(ctx context.Context) ([]string, error) {
+	scs := make([]string, 0, maxHoods)
+
+	rows, err := r.db.Pool.Query(
+		ctx,
+		`SELECT DISTINCT(serving_company) FROM requests WHERE serving_company IS NOT NULL AND serving_company != '';`,
+	)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return scs, nil
+		}
+
+		return nil, fmt.Errorf("failed to get unqiue serving_company: %w", err)
+	}
+
+	defer rows.Close()
+
+	var sc string
+
+	for rows.Next() {
+		if err = rows.Scan(&sc); err != nil {
+			return nil, fmt.Errorf("failed to scan serving_company: %w", err)
+		}
+
+		scs = append(scs, sc)
+	}
+
+	return scs, nil
+}
+
+func (r *hcsPostgresRepository) GetUniqueOwnerCompanies(ctx context.Context) ([]string, error) {
+	scs := make([]string, 0, maxHoods)
+
+	rows, err := r.db.Pool.Query(
+		ctx,
+		`SELECT DISTINCT(owner_company) FROM requests WHERE owner_company IS NOT NULL AND owner_company != '';`,
+	)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return scs, nil
+		}
+
+		return nil, fmt.Errorf("failed to get unqiue owner_company: %w", err)
+	}
+
+	defer rows.Close()
+
+	var sc string
+
+	for rows.Next() {
+		if err = rows.Scan(&sc); err != nil {
+			return nil, fmt.Errorf("failed to scan owner_company: %w", err)
+		}
+
+		scs = append(scs, sc)
+	}
+
+	return scs, nil
+}
+
+func (r *hcsPostgresRepository) GetUniqueDeffectCategories(ctx context.Context) ([]string, error) {
+	scs := make([]string, 0, maxHoods)
+
+	rows, err := r.db.Pool.Query(
+		ctx,
+		`SELECT DISTINCT(deffect_category_name) FROM requests WHERE deffect_category_name IS NOT NULL AND deffect_category_name != '';`,
+	)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return scs, nil
+		}
+
+		return nil, fmt.Errorf("failed to get unqiue deffect_category_name: %w", err)
+	}
+
+	defer rows.Close()
+
+	var sc string
+
+	for rows.Next() {
+		if err = rows.Scan(&sc); err != nil {
+			return nil, fmt.Errorf("failed to scan deffect_category_name: %w", err)
+		}
+
+		scs = append(scs, sc)
+	}
+
+	return scs, nil
+}
+
+func (r *hcsPostgresRepository) GetUniqueWorkTypes(ctx context.Context) ([]string, error) {
+	scs := make([]string, 0, maxHoods)
+
+	rows, err := r.db.Pool.Query(
+		ctx,
+		`SELECT DISTINCT(work_type_done) FROM requests WHERE work_type_done IS NOT NULL AND work_type_done != '';`,
+	)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return scs, nil
+		}
+
+		return nil, fmt.Errorf("failed to get unqiue work_type_done: %w", err)
+	}
+
+	defer rows.Close()
+
+	var sc string
+
+	for rows.Next() {
+		if err = rows.Scan(&sc); err != nil {
+			return nil, fmt.Errorf("failed to scan work_type_done: %w", err)
+		}
+
+		scs = append(scs, sc)
+	}
+
+	return scs, nil
+}
+
+const getRequestsByDispatcherStmt = `
+SELECT
+	root_id 	  	   			  AS root_id,
+	dispetchers_number 			  AS dispetchers_number,
+	efficiency 		   			  AS efficiency,
+	closure_date 	   			  AS closure_date,
+	NULLIF(grade_for_service, '') AS grade_for_service
+FROM requests
+WHERE
+	closure_date BETWEEN $1 AND $2 AND
+	dispetchers_number = $3
+;
+`
+
+func (r *hcsPostgresRepository) GetRequestsByDispatcher(
+	ctx context.Context,
+	dateFrom, dateTo time.Time,
+	dispNumber string,
+) ([]*entity.Request, error) {
+	requests := make([]*entity.Request, 0)
+
+	rows, err := r.db.Pool.Query(ctx, getRequestsByDispatcherStmt, dateFrom, dateTo, dispNumber)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return requests, nil
+		}
+
+		return nil, fmt.Errorf("failed to get requests by dispatcher: %w", err)
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		req := new(entity.Request)
+
+		if err := rows.Scan(
+			&req.RootID,
+			&req.DispetchersNumber,
+			&req.Effeciency,
+			&req.ClosureDate,
+			&req.GradeForService,
+		); err != nil {
+			return nil, fmt.Errorf("failed to scan request: %w", err)
+		}
+
+		requests = append(requests, req)
+	}
+
+	return requests, nil
+}
+
+func (r *hcsPostgresRepository) GetUniqueDispatchers(ctx context.Context) ([]string, error) {
+	scs := make([]string, 0, maxHoods)
+
+	rows, err := r.db.Pool.Query(
+		ctx,
+		`SELECT DISTINCT(dispetchers_number) FROM requests
+        WHERE
+            dispetchers_number IS NOT NULL AND
+            dispetchers_number != '' AND
+            dispetchers_number != 'тест мос. ру'
+        ORDER BY dispetchers_number desc;`,
+	)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return scs, nil
+		}
+
+		return nil, fmt.Errorf("failed to get unqiue dispetchers_number: %w", err)
+	}
+
+	defer rows.Close()
+
+	var sc string
+
+	for rows.Next() {
+		if err = rows.Scan(&sc); err != nil {
+			return nil, fmt.Errorf("failed to scan dispetchers_number: %w", err)
+		}
+
+		scs = append(scs, sc)
+	}
+
+	return scs, nil
+}
+
+func (r *hcsPostgresRepository) GetRegionArea(ctx context.Context, region string) (string, error) {
+	var areaGeojson string
+
+	row := r.db.Pool.QueryRow(
+		ctx,
+		`SELECT ST_AsGeoJSON(wkt) FROM hoods_areas WHERE hood = $1;`,
+		region,
+	)
+
+	if err := row.Scan(&areaGeojson); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return "", nil
+		}
+
+		return "", fmt.Errorf("failed to count points: %w", err)
+	}
+
+	return areaGeojson, nil
 }

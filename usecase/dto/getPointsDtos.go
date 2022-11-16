@@ -16,7 +16,13 @@ type GetPointsRequestQueryDTO struct {
 	YMax            *float64  `form:"y_max"           validate:"gte=-90,lte=90"`
 	Limit           int       `form:"limit"           validate:"required,gt=0,lte=10000"`
 	Offest          *int      `form:"offset"          validate:"required,gte=0"`
-	UrgencyCategory *string   `form:"urgency_category"`
+	ServingCompany  []string  `form:"serving_company"`   // компания исполнитель
+	Efficiency      []string  `form:"efficiency"`        // результативность
+	GradeForService []string  `form:"grade_for_service"` // оценка качества
+	UrgencyCategory []string  `form:"urgency_category"`  // срочность
+	WorkType        []string  `form:"work_type"`         // виды работ
+	DeffectCategory []string  `form:"deffect_category"`  // категория дефекта
+	OwnerCompany    []string  `form:"owner_company"`     // упр. организация
 }
 
 type GetPointsResponseDTO struct {

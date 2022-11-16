@@ -28,28 +28,36 @@ type DI struct {
 		Database *database.Postgres
 	}
 	Repositories struct {
-		MoscowRegionsRepository       repository.MoscowRegionsRepository
 		HCSRepository                 repository.HCSRepository
 		LastAnomalyCheckJobRepository repository.LastAnomalyCheckJobRepository
 		RequestsAnomaliesRepository   repository.RequestsAnomaliesRepository
 	}
 	Services struct {
-		MoscowRegionsService       service.MoscowRegionsService
 		HCSService                 service.HCSService
 		LastAnomalyCheckJobService service.LastAnomalyCheckJobService
 		RequestsAnomaliesService   service.RequestsAnomaliesService
 		ModelService               service.ModelService
+		FileService                service.FileService
+		PlotService                service.PlotService
 	}
 	Usecases struct {
-		GetUniqueMoscowRegionsUsecase      *usecase.GetUniqueMoscowRegionsUsecase
-		GetPointsWithFiltersUsecase        *usecase.GetPointsWithFiltersUsecase
-		GetRequestsByIdsUsecase            *usecase.GetRequestsByIdsUsecase
-		GetRequestsAnomaliesByIdsUsecase   *usecase.GetRequestsAnomaliesByIdsUsecase
-		EnrichRequestsWithAnomaliesUsecase *usecase.EnrichRequestsWithAnomaliesUsecase
-		GetRequestsFullUsecase             *usecase.GetRequestsFullUsecase
-		CountPointsWithFiltersUsecase      *usecase.CountPointsWithFiltersUsecase
-		CountRequestsFullUsecase           *usecase.CountRequestsFullUsecase
-		SetCustomRequestAnomalyUsecase     *usecase.SetCustomRequestAnomalyUsecase
+		GetFiltersUsecase                       *usecase.GetFiltersUsecase
+		GetPointsWithFiltersUsecase             *usecase.GetPointsWithFiltersUsecase
+		GetRequestsByIdsUsecase                 *usecase.GetRequestsByIdsUsecase
+		GetRequestsAnomaliesByIdsUsecase        *usecase.GetRequestsAnomaliesByIdsUsecase
+		EnrichRequestsWithAnomaliesUsecase      *usecase.EnrichRequestsWithAnomaliesUsecase
+		GetRequestsFullUsecase                  *usecase.GetRequestsFullUsecase
+		CountPointsWithFiltersUsecase           *usecase.CountPointsWithFiltersUsecase
+		CountRequestsFullUsecase                *usecase.CountRequestsFullUsecase
+		SetCustomRequestAnomalyUsecase          *usecase.SetCustomRequestAnomalyUsecase
+		CountAnomaliesUsecase                   *usecase.CountAnomaliesUsecase
+		CountAnomaliesGrouppedUsecase           *usecase.CountAnomaliesGrouppedUsecase
+		GetAnomaliesAmountDynamicsUsecase       *usecase.GetAnomaliesAmountDynamicsUsecase
+		CountAnomaliesCountByOwnerCompanies     *usecase.CountAnomaliesByOwnerCompaniesUsecase
+		CountAnomaliesByServingCompaniesUsecase *usecase.CountAnomaliesByServingCompaniesUsecase
+		CountAnomaliesByDeffectCategories       *usecase.CountAnomaliesByDeffectCategoriesUsecase
+		GetEfficiencyPlotUsecase                *usecase.GetEfficiencyPlotUsecase
+		GetRegionAreaUsecase                    *usecase.GetRegionAreaUsecase
 	}
 }
 
@@ -83,7 +91,7 @@ func NewDI(ctx context.Context) (*DI, error) {
 
 	server, err := api.NewServer(
 		cfg,
-		di.Usecases.GetUniqueMoscowRegionsUsecase,
+		di.Usecases.GetFiltersUsecase,
 		di.Usecases.GetPointsWithFiltersUsecase,
 		di.Usecases.GetRequestsByIdsUsecase,
 		di.Usecases.GetRequestsAnomaliesByIdsUsecase,
@@ -91,6 +99,14 @@ func NewDI(ctx context.Context) (*DI, error) {
 		di.Usecases.CountPointsWithFiltersUsecase,
 		di.Usecases.CountRequestsFullUsecase,
 		di.Usecases.SetCustomRequestAnomalyUsecase,
+		di.Usecases.CountAnomaliesUsecase,
+		di.Usecases.CountAnomaliesGrouppedUsecase,
+		di.Usecases.GetAnomaliesAmountDynamicsUsecase,
+		di.Usecases.CountAnomaliesCountByOwnerCompanies,
+		di.Usecases.CountAnomaliesByServingCompaniesUsecase,
+		di.Usecases.CountAnomaliesByDeffectCategories,
+		di.Usecases.GetEfficiencyPlotUsecase,
+		di.Usecases.GetRegionAreaUsecase,
 	)
 	if err != nil {
 		return nil, fmt.Errorf("server init error: %w", err)
@@ -130,7 +146,7 @@ func NewDI(ctx context.Context) (*DI, error) {
 	// fmt.Println(di.Services.HCSService.CountRequestsByClosureTime(ctx, t1, t2))
 	// fmt.Println(di.Services.HCSService.GetRequestsByClosureTime(ctx, t1, t2, 5, 0))
 	//
-	di.Usecases.EnrichRequestsWithAnomaliesUsecase.Execute(ctx)
+	go di.Usecases.EnrichRequestsWithAnomaliesUsecase.Execute(ctx)
 
 	return di, nil
 }

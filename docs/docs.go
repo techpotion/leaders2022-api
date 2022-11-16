@@ -127,6 +127,458 @@ const docTemplate = `{
                 }
             }
         },
+        "/dashboard/anomalies/amount_dynamics": {
+            "get": {
+                "description": "returns anomalies amount dynamics",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "dashboard"
+                ],
+                "summary": "Get anomalies amount dynamics",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Region",
+                        "name": "region",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Lower time limit (RFC3339 formatted)",
+                        "name": "datetime_from",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Upper time limit (RFC3339 formatted)",
+                        "name": "datetime_to",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetAnomaliesAmountDynamicsResponseDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetAnomaliesAmountDynamicsResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetAnomaliesAmountDynamicsResponseDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/dashboard/anomalies/count": {
+            "get": {
+                "description": "returns amount and percent of anomalies",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "dashboard"
+                ],
+                "summary": "Count and get percent of anomalies",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Region",
+                        "name": "region",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Lower time limit (RFC3339 formatted)",
+                        "name": "datetime_from",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Upper time limit (RFC3339 formatted)",
+                        "name": "datetime_to",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountAnomaliesResponseDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountAnomaliesResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountAnomaliesResponseDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/dashboard/anomalies/count_groupped": {
+            "get": {
+                "description": "returns amount of anomalies groupped by cases",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "dashboard"
+                ],
+                "summary": "Count and get amount anomalies groupped by cases",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Region",
+                        "name": "region",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Lower time limit (RFC3339 formatted)",
+                        "name": "datetime_from",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Upper time limit (RFC3339 formatted)",
+                        "name": "datetime_to",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountAnomaliesGrouppedResponseDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountAnomaliesGrouppedResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountAnomaliesGrouppedResponseDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/dashboard/anomalies/ratings/deffect_categories": {
+            "get": {
+                "description": "returns rating of anomalies groupped by serving companies based on deffect categories",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "dashboard"
+                ],
+                "summary": "Get rating of anomalies groupped by deffect categories",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Region",
+                        "name": "region",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Lower time limit (RFC3339 formatted)",
+                        "name": "datetime_from",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Upper time limit (RFC3339 formatted)",
+                        "name": "datetime_to",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountAnomaliesByDeffectCategoriesResponseDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountAnomaliesByDeffectCategoriesResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountAnomaliesByDeffectCategoriesResponseDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/dashboard/anomalies/ratings/owner_companies": {
+            "get": {
+                "description": "returns rating of anomalies groupped by owner companies based on anomalies count",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "dashboard"
+                ],
+                "summary": "Get rating of anomalies groupped by owner companies",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Region",
+                        "name": "region",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Lower time limit (RFC3339 formatted)",
+                        "name": "datetime_from",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Upper time limit (RFC3339 formatted)",
+                        "name": "datetime_to",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountAnomaliesByOwnerCompaniesResponseDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountAnomaliesByOwnerCompaniesResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountAnomaliesByOwnerCompaniesResponseDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/dashboard/anomalies/ratings/serving_companies": {
+            "get": {
+                "description": "returns rating of anomalies groupped by serving companies based on anomalies count",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "dashboard"
+                ],
+                "summary": "Get rating of anomalies groupped by serving companies",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Region",
+                        "name": "region",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Lower time limit (RFC3339 formatted)",
+                        "name": "datetime_from",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Upper time limit (RFC3339 formatted)",
+                        "name": "datetime_to",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountAnomaliesByServingCompaniesResponseDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountAnomaliesByServingCompaniesResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CountAnomaliesByServingCompaniesResponseDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/dashboard/plots/efficiency": {
+            "get": {
+                "description": "get an efficiency plot for dispatcher",
+                "tags": [
+                    "dashboard"
+                ],
+                "summary": "Get efficiency plot for dispatcher",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Dispatcher (ОДС)",
+                        "name": "dispatcher",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Lower time limit (RFC3339 formatted)",
+                        "name": "datetime_from",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Upper time limit (RFC3339 formatted)",
+                        "name": "datetime_to",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetEfficiencyPlotResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetEfficiencyPlotResponseDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/deffect_categories": {
+            "get": {
+                "description": "get a list of deffect category_names",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "filters"
+                ],
+                "summary": "Get deffect category_names",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetDeffectCategoriesResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetDeffectCategoriesResponseDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/dispatchers": {
+            "get": {
+                "description": "get a list of dispatchers",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "filters"
+                ],
+                "summary": "Get dispatchers",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetDispatchersResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetDispatchersResponseDTO"
+                        }
+                    }
+                }
+            }
+        },
         "/health": {
             "get": {
                 "description": "simple endpoint to check whether service is alive",
@@ -135,6 +587,35 @@ const docTemplate = `{
                 ],
                 "summary": "Health check",
                 "responses": {}
+            }
+        },
+        "/owner_companies": {
+            "get": {
+                "description": "get a list of owner companies",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "filters"
+                ],
+                "summary": "Get owner companies",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetOwnerCompaniesResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetOwnerCompaniesResponseDTO"
+                        }
+                    }
+                }
             }
         },
         "/points": {
@@ -211,9 +692,66 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "description": "Urgency Category",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Serving companies (компания исполнитель)",
+                        "name": "serving_company",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Efficiency (результативность)",
+                        "name": "efficiency",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Grade for service (оценка качества)",
+                        "name": "grade_for_service",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Urgency category (срочность)",
                         "name": "urgency_category",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Work type (вид работы)",
+                        "name": "work_type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Deffect category (категория дефекта)",
+                        "name": "deffect_category",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Owner company (упр. организация)",
+                        "name": "owner_company",
                         "in": "query"
                     }
                 ],
@@ -299,9 +837,66 @@ const docTemplate = `{
                         "in": "query"
                     },
                     {
-                        "type": "string",
-                        "description": "Urgency Category",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Serving companies (компания исполнитель)",
+                        "name": "serving_company",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Efficiency (результативность)",
+                        "name": "efficiency",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Grade for service (оценка качества)",
+                        "name": "grade_for_service",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Urgency category (срочность)",
                         "name": "urgency_category",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Work type (вид работы)",
+                        "name": "work_type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Deffect category (категория дефекта)",
+                        "name": "deffect_category",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Owner company (упр. организация)",
+                        "name": "owner_company",
                         "in": "query"
                     }
                 ],
@@ -337,7 +932,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "regions"
+                    "filters"
                 ],
                 "summary": "Get regions",
                 "responses": {
@@ -351,6 +946,50 @@ const docTemplate = `{
                         "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/dto.GetRegionsResponseDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/regions/{region}/area": {
+            "get": {
+                "description": "get region's area geojson polygon",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "regions"
+                ],
+                "summary": "Get region area",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Region",
+                        "name": "region",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetRegionAreaResponseDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetRegionAreaResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetRegionAreaResponseDTO"
                         }
                     }
                 }
@@ -414,7 +1053,7 @@ const docTemplate = `{
                 "tags": [
                     "requests_full"
                 ],
-                "summary": "Get points by selected area and region",
+                "summary": "DEPRECATED Get points by selected area and region",
                 "parameters": [
                     {
                         "type": "string",
@@ -529,7 +1168,7 @@ const docTemplate = `{
                 "tags": [
                     "requests_full"
                 ],
-                "summary": "Count requests fulls by selected area and region",
+                "summary": "DEPRECATED Count requests fulls by selected area and region",
                 "parameters": [
                     {
                         "type": "string",
@@ -613,9 +1252,172 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/serving_companies": {
+            "get": {
+                "description": "get a list of serving companies",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "filters"
+                ],
+                "summary": "Get serving companies",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetServingCompaniesResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetServingCompaniesResponseDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/work_types": {
+            "get": {
+                "description": "get a list of work types",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "filters"
+                ],
+                "summary": "Get work types",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetWorkTypesResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetWorkTypesResponseDTO"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "dto.CountAnomaliesByDeffectCategoriesResponseDTO": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "deffect_categories": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.AnomaliesByDeffectCategory"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "dto.CountAnomaliesByOwnerCompaniesResponseDTO": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "owner_companies": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.AnomaliesByOwnerCompany"
+                    }
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "dto.CountAnomaliesByServingCompaniesResponseDTO": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "serving_companies": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.AnomaliesByServingCompany"
+                    }
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "dto.CountAnomaliesDTO": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "percent": {
+                    "type": "number"
+                }
+            }
+        },
+        "dto.CountAnomaliesGrouppedResponseDTO": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "groups_counts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.CountAnomaliesGroupped"
+                    }
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "dto.CountAnomaliesResponseDTO": {
+            "type": "object",
+            "properties": {
+                "current": {
+                    "$ref": "#/definitions/dto.CountAnomaliesDTO"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "previous": {
+                    "$ref": "#/definitions/dto.CountAnomaliesDTO"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
         "dto.CountPointsResponseDTO": {
             "type": "object",
             "properties": {
@@ -644,6 +1446,100 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.GetAnomaliesAmountDynamicsResponseDTO": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "dynamics": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.AnomaliesDynamics"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "dto.GetDeffectCategoriesResponseDTO": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "deffect_categories": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "dto.GetDispatchersResponseDTO": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "dispatcher": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "dto.GetEfficiencyPlotResponseDTO": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "filename": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "dto.GetOwnerCompaniesResponseDTO": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "owner_companies": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
         "dto.GetPointsResponseDTO": {
             "type": "object",
             "properties": {
@@ -658,6 +1554,20 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/entity.HCSPoint"
                     }
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "dto.GetRegionAreaResponseDTO": {
+            "type": "object",
+            "properties": {
+                "area_polygon_geojson": {
+                    "type": "string"
+                },
+                "error": {
+                    "type": "string"
                 },
                 "success": {
                     "type": "boolean"
@@ -744,6 +1654,46 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.GetServingCompaniesResponseDTO": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "serving_companies": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "dto.GetWorkTypesResponseDTO": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "work_types": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "dto.PostCustomAnomaliesRequestDTO": {
             "type": "object",
             "required": [
@@ -756,6 +1706,73 @@ const docTemplate = `{
                 },
                 "root_id": {
                     "type": "string"
+                }
+            }
+        },
+        "entity.AnomaliesByDeffectCategory": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "deffect_category": {
+                    "type": "string"
+                },
+                "percent": {
+                    "type": "number"
+                }
+            }
+        },
+        "entity.AnomaliesByOwnerCompany": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "owner_company": {
+                    "type": "string"
+                },
+                "percent": {
+                    "type": "number"
+                }
+            }
+        },
+        "entity.AnomaliesByServingCompany": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "percent": {
+                    "type": "number"
+                },
+                "serving_company": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.AnomaliesDynamics": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "day": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.CountAnomaliesGroupped": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "percent": {
+                    "type": "number"
+                },
+                "type": {
+                    "type": "integer"
                 }
             }
         },
@@ -1000,6 +2017,9 @@ const docTemplate = `{
                 "is_custom": {
                     "type": "boolean"
                 },
+                "net_probability": {
+                    "type": "number"
+                },
                 "root_id": {
                     "type": "string"
                 }
@@ -1146,6 +2166,9 @@ const docTemplate = `{
                 "need_for_revision": {
                     "type": "string"
                 },
+                "net_probability": {
+                    "type": "number"
+                },
                 "number_of_maternal": {
                     "type": "string"
                 },
@@ -1241,7 +2264,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "65.108.145.234:15400",
+	Host:             "",
 	BasePath:         "/api/v1",
 	Schemes:          []string{"http"},
 	Title:            "Swagger for TechPotion's leadershack2022 solution",

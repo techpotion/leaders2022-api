@@ -26,6 +26,11 @@ type Config struct {
 
 	ModelMicroserviceURI             string `env:"MODEL_MICROSERVICE_URI" envDefault:"http://0.0.0.0:80"`
 	ModelMicroservicePredictEndpoint string `env:"MODEL_MICROSERVICE_PREDICT_ENDPOINT" envDefault:"/combined_model/predict_multiple"`
+
+	LocalStorageFolder string `env:"LOCAL_STORAGE_FOLDER" envDefault:"data"`
+
+	PlotMicroserviceURI                string `env:"PLOT_MICROSERVICE_URI" envDefault:"http://0.0.0.0:80"`
+	PlotMicroserviceEfficiencyEndpoint string `env:"PLOT_MICROSERVICE_EFFICIENCY_ENDPOINT" envDefault:"/plot_efficiency"`
 }
 
 func NewConfig() (*Config, error) {

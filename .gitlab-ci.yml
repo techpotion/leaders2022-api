@@ -1,0 +1,94 @@
+stages:
+  - code_quality
+  - build
+  - migration
+  - deploy_compose
+
+lint:
+  stage: code_quality
+  script:
+    - sh .gitlab-ci/docker_lint.sh
+  tags:
+    - shell-runner
+
+test:
+  stage: code_quality
+  script:
+    - sh .gitlab-ci/docker_test.sh
+  tags:
+    - shell-runner
+
+gosec:
+  stage: code_quality
+  script:
+    - sh .gitlab-ci/docker_gosec.sh
+  tags:
+    - shell-runner
+
+build:prod:
+  stage: build
+  script:
+    - sh .gitlab-ci/docker_build.sh
+  only:
+    - main
+  tags:
+    - shell-runner
+
+build:test:
+  stage: build
+  script:
+    - sh .gitlab-ci/docker_build_test.sh
+  only:
+    - test
+  tags:
+    - shell-runner
+
+migration:prod:
+  stage: migration
+  script:
+    - bash .gitlab-ci/docker_migrate.sh
+  when: manual
+  only:
+    - main
+  tags:
+    - shell-runner
+
+migration:test:
+  stage: migration
+  script:
+    - bash .gitlab-ci/docker_migrate_test.sh
+  when: manual
+  only:
+    - test
+  tags:
+    - shell-runner
+
+deploy:prod:
+  stage: deploy_compose
+  environment:
+    name: prod
+  script:
+    - sh .gitlab-ci/docker_deploy.sh
+  variables:
+    APP: leadershack2022-api
+    HTTP_SERVER_PORT: ${PORT}
+  when: manual
+  only:
+    - main
+  tags:
+    - shell-runner
+
+deploy:test:
+  stage: deploy_compose
+  environment:
+    name: prod
+  script:
+    - sh .gitlab-ci/docker_deploy_test.sh
+  variables:
+    APP: leadershack2022-api-test
+    HTTP_SERVER_PORT: ${PORT_TEST}
+  when: manual
+  only:
+    - test
+  tags:
+    - shell-runner
